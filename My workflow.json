@@ -1,0 +1,535 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -112,
+        -64
+      ],
+      "id": "4d7b94a4-2ffa-484e-818a-193821643476",
+      "name": "When chat message received",
+      "webhookId": "61ff6a89-9240-41b4-a7b0-0bf855790b8c"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Tu es l'assistant de Génération Prospect, une agence d'activités touristiques au Maroc.\n\nRÈGLE D'ACCUEIL :\n- Si l'utilisateur commence la conversation (premier message du type \"salut\" ou \"bonjour\"), réponds UNIQUEMENT :\n  \"Bonjour. Quelle activité au Maroc vous intéresse ?\"\n- Pour toutes les réponses suivantes dans la discussion, réponds naturellement aux questions de l'utilisateur SANS répéter la phrase d'accueil.\n\nUTILISATION DES OUTILS :\n- Utilise TOUJOURS l'outil \"base_de_connaissance\" pour rechercher les activités, prix exacts et disponibilités avant de répondre.\n- Base-toi UNIQUEMENT sur ces données pour répondre.\n\nGESTION DES CLIENTS :\nDès que le client fournit ses informations (nom, email, téléphone), extrait-les et utilise l'outil gerer_clients au format :\n- name: [nom du client]\n- email: [email du client]\n- phone: [téléphone du client]\n- activity: [activité souhaitée]\n- date: [date actuelle]"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        144,
+        -64
+      ],
+      "id": "9ebddc76-0b72-48b3-b14e-3eb1c8dad558",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        160,
+        144
+      ],
+      "id": "99c5b75d-1d3c-4d7f-9791-631446d54e44",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "triggerOn": "specificFile",
+        "fileToWatch": {
+          "__rl": true,
+          "value": "1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL",
+          "mode": "list",
+          "cachedResultName": "Base_de_Connaissance_Activites_Maroc_DH.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL/view?usp=drivesdk"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        592,
+        336
+      ],
+      "id": "75b42e71-6f40-4f4a-9c8a-c359db888205",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Nd7AwuOstSAsrEjj",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL",
+          "mode": "list",
+          "cachedResultName": "Base_de_Connaissance_Activites_Maroc_DH.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        832,
+        336
+      ],
+      "id": "96b28880-c8dc-4c5f-b564-be0517bc804b",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Nd7AwuOstSAsrEjj",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "value": "maroc_activities_bd",
+          "mode": "list",
+          "cachedResultName": "maroc_activities_bd"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        1056,
+        336
+      ],
+      "id": "a8f94cf3-dd47-4c54-bcbf-11e2546d1bf3",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        976,
+        544
+      ],
+      "id": "ab7310d6-e061-4831-a19c-e6154197abc2",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pglBBHUcvkxi5aKQ",
+          "name": "Google Gemini(PaLM) Api account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        544
+      ],
+      "id": "e2075e5e-349b-4950-8b50-340d0e5d2627",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.textSplitterTokenSplitter",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        704
+      ],
+      "id": "ce10a017-f3ab-4380-b857-06241701dce4",
+      "name": "Token Splitter"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        144
+      ],
+      "id": "94f4324b-7f5a-4800-a6d5-2d1846272268",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pglBBHUcvkxi5aKQ",
+          "name": "Google Gemini(PaLM) Api account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Utilise cet outil pour rechercher des informations sur les activités touristiques au Maroc.",
+        "memoryKey": {
+          "__rl": true,
+          "value": "maroc_activities_bd",
+          "mode": "list",
+          "cachedResultName": "maroc_activities_bd"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        144
+      ],
+      "id": "972951fd-2034-4563-b0bf-76a76a3ebba5",
+      "name": "Simple Vector Store1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        288,
+        384
+      ],
+      "id": "e4210b36-c42c-402d-8616-01b5da753754",
+      "name": "Embeddings Google Gemini1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "pglBBHUcvkxi5aKQ",
+          "name": "Google Gemini(PaLM) Api account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1eBqsv-IU1rvklzJIq42d_aiCyiTOtr4MG5W8DMCfp68",
+          "mode": "list",
+          "cachedResultName": "BD agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eBqsv-IU1rvklzJIq42d_aiCyiTOtr4MG5W8DMCfp68/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feuille 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eBqsv-IU1rvklzJIq42d_aiCyiTOtr4MG5W8DMCfp68/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nom": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nom', ``, 'string') }}",
+            "Email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email', ``, 'string') }}",
+            "Telephone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Telephone', ``, 'string') }}",
+            "Activite_souhaitee": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Activite_souhaitee', ``, 'string') }}",
+            "Date_actuvite": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Date_actuvite', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nom",
+              "displayName": "Nom",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telephone",
+              "displayName": "Telephone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Activite_souhaitee",
+              "displayName": "Activite_souhaitee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date_actuvite",
+              "displayName": "Date_actuvite",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        144
+      ],
+      "id": "88e785df-ec40-4965-a27a-bf8eb9d7e068",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "wfbWKSm6A0HeJi5s",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliser cet outil pour planifier un événement ou un rendez-vous dans l'agenda avec le client, paramètres requis : summary (titre de l'événement / activité), start (date et heure de début",
+        "calendar": {
+          "__rl": true,
+          "value": "salmabellamine999@gmail.com",
+          "mode": "list",
+          "cachedResultName": "salmabellamine999@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        816,
+        80
+      ],
+      "id": "1ea83dfc-aa7d-40e2-a275-0df73fc027b0",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "I1RGP39Ic9WskrA4",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Send a message in Gmail avec tous les infos personnel et pour l'activite tous",
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "Confirmation de reservation",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', `rediger un emial qui recapitule toutes les informations nessaissaire sur l activite reserber ainsi que l'agent afin que l'utilisateur dispose de tous ce qu'il lui faut.`, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        240
+      ],
+      "id": "7d4ac5ae-1a9f-4fb4-8e83-396298b20fff",
+      "name": "Send a message in Gmail",
+      "webhookId": "dbc7303a-5417-4c45-9b68-6581507ef4a5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WijOFxOwVfvw4QIq",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b5633b72-20f6-43f2-ba90-d5487c3ecdf0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5a8b5ff3d090612d1ac3f1c6a88c7427134526028306e5a0691acf988d294bd7"
+  },
+  "nodeGroups": [],
+  "id": "DpTboKsSVr2vmfVN",
+  "tags": []
+}
