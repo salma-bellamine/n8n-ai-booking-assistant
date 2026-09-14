@@ -13,7 +13,7 @@
       ],
       "id": "4d7b94a4-2ffa-484e-818a-193821643476",
       "name": "When chat message received",
-      "webhookId": "61ff6a89-9240-41b4-a7b0-0bf855790b8c"
+      "webhookId": "YOUR_WEBHOOK_ID"
     },
     {
       "parameters": {
@@ -53,10 +53,10 @@
         "triggerOn": "specificFile",
         "fileToWatch": {
           "__rl": true,
-          "value": "1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL",
+          "value": "YOUR_GOOGLE_DRIVE_FILE_ID",
           "mode": "list",
           "cachedResultName": "Base_de_Connaissance_Activites_Maroc_DH.pdf",
-          "cachedResultUrl": "https://drive.google.com/file/d/1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL/view?usp=drivesdk"
+          "cachedResultUrl": "https://drive.google.com/file/d/YOUR_GOOGLE_DRIVE_FILE_ID/view"
         }
       },
       "type": "n8n-nodes-base.googleDriveTrigger",
@@ -69,7 +69,7 @@
       "name": "Google Drive Trigger",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "Nd7AwuOstSAsrEjj",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Google Drive account 2"
         }
       }
@@ -79,10 +79,10 @@
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL",
+          "value": "YOUR_GOOGLE_DRIVE_FILE_ID",
           "mode": "list",
           "cachedResultName": "Base_de_Connaissance_Activites_Maroc_DH.pdf",
-          "cachedResultUrl": "https://drive.google.com/file/d/1GomEK0JgxTCZ__W4Y5eZG7F4rBCv6CRL/view?usp=drivesdk"
+          "cachedResultUrl": "https://drive.google.com/file/d/YOUR_GOOGLE_DRIVE_FILE_ID/view"
         },
         "options": {}
       },
@@ -96,7 +96,7 @@
       "name": "Download file",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "Nd7AwuOstSAsrEjj",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Google Drive account 2"
         }
       }
@@ -132,7 +132,7 @@
       "name": "Embeddings Google Gemini",
       "credentials": {
         "googlePalmApi": {
-          "id": "pglBBHUcvkxi5aKQ",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Google Gemini(PaLM) Api account 5"
         }
       }
@@ -178,7 +178,7 @@
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
-          "id": "pglBBHUcvkxi5aKQ",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Google Gemini(PaLM) Api account 5"
         }
       }
@@ -215,7 +215,7 @@
       "name": "Embeddings Google Gemini1",
       "credentials": {
         "googlePalmApi": {
-          "id": "pglBBHUcvkxi5aKQ",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Google Gemini(PaLM) Api account 5"
         }
       }
@@ -225,17 +225,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1eBqsv-IU1rvklzJIq42d_aiCyiTOtr4MG5W8DMCfp68",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "BD agent",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eBqsv-IU1rvklzJIq42d_aiCyiTOtr4MG5W8DMCfp68/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Feuille 1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eBqsv-IU1rvklzJIq42d_aiCyiTOtr4MG5W8DMCfp68/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -309,7 +309,7 @@
       "name": "Append row in sheet in Google Sheets",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "wfbWKSm6A0HeJi5s",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Google Sheets account"
         }
       }
@@ -320,9 +320,9 @@
         "toolDescription": "Utiliser cet outil pour planifier un événement ou un rendez-vous dans l'agenda avec le client, paramètres requis : summary (titre de l'événement / activité), start (date et heure de début",
         "calendar": {
           "__rl": true,
-          "value": "salmabellamine999@gmail.com",
+          "value": "YOUR_EMAIL@gmail.com",
           "mode": "list",
-          "cachedResultName": "salmabellamine999@gmail.com"
+          "cachedResultName": "YOUR_EMAIL@gmail.com"
         },
         "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
         "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
@@ -341,7 +341,7 @@
       "name": "Create an event in Google Calendar",
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "I1RGP39Ic9WskrA4",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Google Calendar account"
         }
       }
@@ -364,10 +364,10 @@
       ],
       "id": "7d4ac5ae-1a9f-4fb4-8e83-396298b20fff",
       "name": "Send a message in Gmail",
-      "webhookId": "dbc7303a-5417-4c45-9b68-6581507ef4a5",
+      "webhookId": "YOUR_WEBHOOK_ID",
       "credentials": {
         "gmailOAuth2": {
-          "id": "WijOFxOwVfvw4QIq",
+          "id": "YOUR_CREDENTIAL_ID",
           "name": "Gmail account"
         }
       }
@@ -524,12 +524,12 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "b5633b72-20f6-43f2-ba90-d5487c3ecdf0",
+  "versionId": "YOUR_VERSION_ID",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5a8b5ff3d090612d1ac3f1c6a88c7427134526028306e5a0691acf988d294bd7"
   },
   "nodeGroups": [],
-  "id": "DpTboKsSVr2vmfVN",
+  "id": "YOUR_WORKFLOW_ID",
   "tags": []
 }
